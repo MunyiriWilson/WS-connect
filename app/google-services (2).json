@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1888840385",
+    "project_id": "antananarivo-3c049",
+    "storage_bucket": "antananarivo-3c049.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1888840385:android:872322dc1c15cc86e58240",
+        "android_client_info": {
+          "package_name": "com.example.johannesburg.ui.theme.models"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2RZXziFAjV_4Zm0B1YnNAV_OZ92dNwE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1888840385:android:6752c8c11b3718e5e58240",
+        "android_client_info": {
+          "package_name": "com.example.workshpereconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2RZXziFAjV_4Zm0B1YnNAV_OZ92dNwE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1888840385:android:b07c726b8f240d42e58240",
+        "android_client_info": {
+          "package_name": "com.example.worksphereconnect.ui.theme.models"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2RZXziFAjV_4Zm0B1YnNAV_OZ92dNwE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
