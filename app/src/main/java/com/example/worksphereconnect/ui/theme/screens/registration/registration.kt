@@ -42,6 +42,7 @@ import com.example.worksphereconnect.R
 import com.example.worksphereconnect.ui.theme.ElectricBlue
 import com.example.worksphereconnect.ui.theme.SoftWhite
 import com.example.worksphereconnect.ui.theme.models.AuthViewModel
+import com.example.worksphereconnect.ui.theme.screens.login.LoginActivity
 import com.google.firebase.auth.AuthCredential
 
 class RegisterActivity : ComponentActivity() {
@@ -161,10 +162,17 @@ fun RegisterScreen(authViewModel: AuthViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            TextButton(
-                onClick = { /* Navigate to login screen */ }
-            ) {
-                Text("Have an account? Login", color = ElectricBlue)
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text("Have an account? ", color = Color.Gray, fontSize = 14.sp)
+                Text(
+                    text = "Login",
+                    color = ElectricBlue,
+                    fontSize = 14.sp,
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.clickable {
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
