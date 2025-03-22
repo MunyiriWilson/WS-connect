@@ -15,9 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,9 +23,11 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.worksphereconnect.R
 import com.example.worksphereconnect.ui.theme.ElectricBlue
 import com.example.worksphereconnect.ui.theme.screens.registration.RegisterActivity
+// Import HomePageActivity
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.worksphereconnect.ui.theme.screens.homepage.HomePageActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
@@ -113,7 +113,6 @@ fun LoginScreen(viewModel: AuthViewModel = AuthViewModel()) {
                     text = errorMessage,
                     color = Color.Red,
                     fontSize = 14.sp,
-
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
@@ -126,6 +125,7 @@ fun LoginScreen(viewModel: AuthViewModel = AuthViewModel()) {
                         viewModel.login(email, password,
                             onSuccess = {
                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                                context.startActivity(Intent(context, HomePageActivity::class.java)) // Navigate to HomePageActivity
                             },
                             onFailure = {
                                 errorMessage = it

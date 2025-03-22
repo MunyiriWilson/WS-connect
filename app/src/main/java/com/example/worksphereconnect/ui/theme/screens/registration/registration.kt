@@ -23,6 +23,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -40,10 +42,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.worksphereconnect.R
 import com.example.worksphereconnect.ui.theme.ElectricBlue
-import com.example.worksphereconnect.ui.theme.SoftWhite
 import com.example.worksphereconnect.ui.theme.models.AuthViewModel
+import com.example.worksphereconnect.ui.theme.screens.homepage.HomePageActivity
+
+
 import com.example.worksphereconnect.ui.theme.screens.login.LoginActivity
 import com.google.firebase.auth.AuthCredential
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 
 class RegisterActivity : ComponentActivity() {
     private val authViewModel: AuthViewModel by viewModels()
@@ -65,6 +70,13 @@ fun RegisterScreen(authViewModel: AuthViewModel) {
     var confirmPassword by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
+
+    val phoneUtil = PhoneNumberUtil.getInstance()
+    val countryCodes = phoneUtil.supportedRegions.map { "+${phoneUtil.getCountryCodeForRegion(it)}" }
+        .distinct()
+        .sortedBy { it.replace("+", "").toInt() }
+    var selectedCountryCode by remember { mutableStateOf(countryCodes.first()) }
+    var expanded by remember { mutableStateOf(false) }
 
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -93,7 +105,47 @@ fun RegisterScreen(authViewModel: AuthViewModel) {
             Spacer(modifier = Modifier.height(16.dp))
 
             RegistrationTextField("Company Name", name) { name = it }
-            RegistrationTextField("Phone Number", phone) { phone = it }
+            Box(modifier = Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = "$selectedCountryCode $phone",
+                    onValueChange = {
+                        val parts = it.split(" ", limit = 2)
+                        if (parts.size == 2) {
+                            selectedCountryCode = parts[0]
+                            phone = parts[1]
+                        } else {
+                            phone = parts[0]
+                        }
+                    },
+                    label = { Text("Phone Number", color = Color.Gray) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = ElectricBlue,
+                        unfocusedBorderColor = Color.Gray,
+                    ),
+                    trailingIcon = {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                        }
+                    }
+                )
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    countryCodes.forEach { code ->
+                        DropdownMenuItem(
+                            text = { Text(code) },
+                            onClick = {
+                                selectedCountryCode = code
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
             RegistrationTextField("Email", email) { email = it }
             PasswordTextField("Password", password) { password = it }
             PasswordTextField("Confirm Password", confirmPassword) { confirmPassword = it }
@@ -133,6 +185,7 @@ fun RegisterScreen(authViewModel: AuthViewModel) {
                     authViewModel.signUp(name, email, password,
                         onSuccess = {
                             Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
+                            context.startActivity(Intent(context, HomePageActivity::class.java))
                         },
                         onFailure = { error ->
                             errorMessage = when {
