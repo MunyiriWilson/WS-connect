@@ -23,6 +23,9 @@
             android:name=".ui.theme.screens.jobs.JobsPageActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.theme.screens.jobs.JobsFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
 

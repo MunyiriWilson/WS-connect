@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.worksphereconnect.ui.theme.screens.homepage.HomePageActivity
+import com.example.worksphereconnect.ui.theme.screens.jobs.JobsPageActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {

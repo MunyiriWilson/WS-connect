@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.navigation.compose)
+    implementation("androidx.navigation:navigation-runtime-android:2.9.0-alpha08")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,4 +68,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.libphonenumber)
     implementation(libs.ccp)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.firebase.firestore.ktx.v2443)
+
+
 }

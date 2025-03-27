@@ -1,6 +1,6 @@
 package com.example.worksphereconnect.ui.theme.screens.jobs
 
-
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,8 +11,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
@@ -23,12 +25,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.worksphereconnect.R
+import com.example.worksphereconnect.ui.theme.screens.homepage.HomePageActivity
+import com.example.worksphereconnect.ui.theme.screens.login.LoginActivity
+import com.example.worksphereconnect.ui.theme.screens.registration.RegisterActivity
 
 
 class JobsPageActivity : ComponentActivity() {
@@ -47,18 +53,37 @@ fun JobsPageScreen() {
     val secondaryColor = Color(0xFF3370a9)
     val accentColor = Color(0xFF06B6D4)
     val textColor = Color(0xFF3370a9)
+    val context = LocalContext.current
 
     Scaffold(
         topBar = { TopBar(textColor) },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { BottomNavigation() }
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(backgroundColor)
         ) {
-            JobList(textColor, secondaryColor)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 70.dp) // Leave space for FAB
+            ) {
+                JobList(textColor, secondaryColor)
+            }
+
+            // Floating Action Button (FAB)
+            FloatingActionButton(
+                onClick = {  context.startActivity(Intent(context, JobsFormActivity::class.java))},
+                containerColor = primaryColor,
+                shape = CircleShape,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 20.dp, bottom = 80.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+            }
         }
     }
 }
@@ -79,7 +104,6 @@ fun TopBar(textColor: Color) {
             Icon(Icons.Default.Person, contentDescription = "Profile", tint = textColor)
         }
 
-        // Replaced text with an image spanning the space
         Image(
             painter = painterResource(id = R.drawable.applogo), // Change to your actual image resource
             contentDescription = "W.S CONNECT Logo",
@@ -156,18 +180,10 @@ fun JobCard(job: Job, textColor: Color, cardColor: Color) {
 data class Job(val title: String, val description: String, val budget: String, val tags: List<String>)
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigation() {
     val backgroundColor = Color(0xFFf2f3f4)
     val iconColor = Color(0xFF3370a9)
-
-    var selectedIndex by remember { mutableStateOf(2) } // Default selection: Jobs
-    val navItems = listOf(
-        R.drawable.promotion to "Tracking",
-        R.drawable.candidate to "Affiliations",
-        R.drawable.home to "Jobs",
-        R.drawable.appointment to "Learning",
-        R.drawable.star to "Reviews"
-    )
+    val context = LocalContext.current
 
     Row(
         modifier = Modifier
@@ -176,46 +192,65 @@ fun BottomNavigationBar() {
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        navItems.forEachIndexed { index, (imageRes, description) ->
-            val isSelected = index == selectedIndex
-            var isClicked by remember { mutableStateOf(false) }
-
-            // Animation for slight enlargement and shrink back
-            val scale by animateFloatAsState(
-                targetValue = if (isClicked) 1.1f else 1.0f,
-                animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing),
-                finishedListener = { isClicked = false }, // Reset after animation completes
-                label = "scale"
+        IconButton(onClick = {
+            context.startActivity(Intent(context, RegisterActivity::class.java))
+        }) {
+            Image(
+                painter = painterResource(id = R.drawable.promotion),
+                contentDescription = "Tracking",
+                modifier = Modifier.size(32.dp),
+                colorFilter = ColorFilter.tint(iconColor)
             )
+        }
 
-            Box(
-                modifier = Modifier
-                    .size(65.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .border(5.dp, backgroundColor, RoundedCornerShape(12.dp))
-                    .background(backgroundColor)
-                    .padding(1.dp)
-                    .clickable {
-                        isClicked = true
-                        selectedIndex = index
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = description,
-                    modifier = Modifier
-                        .size((32 * scale).dp) // Briefly enlarges then shrinks
-                        .graphicsLayer(scaleX = scale, scaleY = scale),
-                    colorFilter = ColorFilter.tint(iconColor)
-                )
-            }
+        IconButton(onClick = {
+            context.startActivity(Intent(context, LoginActivity::class.java))
+        }) {
+            Image(
+                painter = painterResource(id = R.drawable.candidate),
+                contentDescription = "Affiliations",
+                modifier = Modifier.size(32.dp),
+                colorFilter = ColorFilter.tint(iconColor)
+            )
+        }
+
+        IconButton(onClick = {
+            context.startActivity(Intent(context, HomePageActivity::class.java))
+        }) {
+            Image(
+                painter = painterResource(id = R.drawable.home),
+                contentDescription = "Jobs",
+                modifier = Modifier.size(32.dp),
+                colorFilter = ColorFilter.tint(iconColor)
+            )
+        }
+
+        IconButton(onClick = {
+            context.startActivity(Intent(context, JobsPageActivity::class.java))
+        }) {
+            Image(
+                painter = painterResource(id = R.drawable.appointment),
+                contentDescription = "Learning",
+                modifier = Modifier.size(32.dp),
+                colorFilter = ColorFilter.tint(iconColor)
+            )
+        }
+
+        IconButton(onClick = {
+            context.startActivity(Intent(context, JobsFormActivity::class.java))
+        }) {
+            Image(
+                painter = painterResource(id = R.drawable.star),
+                contentDescription = "Reviews",
+                modifier = Modifier.size(32.dp),
+                colorFilter = ColorFilter.tint(iconColor)
+            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewHomePageScreen() {
+fun PreviewJobsPageScreen() {
     JobsPageScreen()
 }
